@@ -14,8 +14,16 @@ if (isset($_POST['submit'])) {
         if ($cate_count > 0) {
             echo "<script>alert('Category Already Exiest !')</script>";
         } else {
-            $insert = mysqli_query($con, "INSERT INTO category(`categories`)VALUES('$categories')");
-            header('location:category.php');
+            $explode = explode('.', $_FILES['image']['name']);
+            $extension = end($explode);
+            $img = time() . "." . $extension;
+            $tmp = $_FILES['image']['tmp_name'];
+            $file = "../assets/category/" . $img;
+            $move = move_uploaded_file($tmp, $file);
+            if ($move) {
+                $insert = mysqli_query($con, "INSERT INTO category(`categories`,`img`)VALUES('$categories','$img')");
+                header('location:category.php');
+            }
         }
     }
 }
@@ -25,13 +33,24 @@ if (isset($_GET['update_id'])) {
 
     $data_exe = mysqli_query($con, "SELECT * FROM category WHERE `id`='$update_id' ");
     $data_arr = mysqli_fetch_assoc($data_exe);
+    $uimage = $data_arr['img'];
 }
 
 if (isset($_POST['update'])) {
     $id = $_GET['update_id'];
     $ncategory = $_POST['categories'] ? $_POST['categories'] : $data_arr['categories'];
-
-    $data_update = "UPDATE category SET `categories`='$ncategory' WHERE `id`='$id'";
+    if (isset($_FILES['image']['name']) && ($_FILES['image']['name'] != "")) {
+        unlink('../assets/category/' . $uimage);
+        $explode = explode('.', $_FILES['image']['name']);
+        $extension = end($explode);
+        $image = time() . "." . $extension;
+        $tmp = $_FILES['image']['tmp_name'];
+        $file = "../assets/category/" . $image;
+        $move = move_uploaded_file($tmp, $file);
+    } else {
+        $image = $uimage;
+    }
+    $data_update = "UPDATE category SET `categories`='$ncategory',`img`='$image' WHERE `id`='$id'";
     $updated_data_exe = mysqli_query($con, $data_update);
 
     if ($updated_data_exe) {
@@ -122,15 +141,26 @@ if (isset($_POST['update'])) {
 
                                         <small class="text-muted float-end">Category</small>
                                     </div>
-                                  
+
                                     <div class="card-body">
                                         <form action="" method="POST" id="form" enctype="multipart/form-data">
                                             <div class="mb-3">
                                                 <label class="form-label" for="basic-default-fullname">Category
                                                     Name</label>
                                                 <input type="text" id="category" placeholder="Add Category" name="categories" value="<?php if (isset($_GET['update_id'])) {
-                                                                                                                echo $data_arr['categories'];
-                                                                                                            } ?>" class="form-control" required />
+                                                                                                                                            echo $data_arr['categories'];
+                                                                                                                                        } ?>" class="form-control" required />
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label" for="basic-default-fullname">Category
+                                                    Image</label><br>
+
+                                                <?php if (isset($_GET['update_id'])) {
+
+                                                ?> <img src="../assets/category/<?php echo $data_arr['img']; ?>" alt="" height="70px" width="70px"><?php }
+                                                                                                                                                                                                                ?>
+                                                <input type="file" id="img" name="image" class="form-control" style="width: 35%;">
+
                                             </div>
                                             <?php if (isset($_GET['update_id'])) { ?>
                                                 <button type="submit" id="update" value="submit" name="update" class="btn btn-primary">Update</button>
@@ -173,7 +203,7 @@ if (isset($_POST['update'])) {
     <script src="../assets/vendor/js/bootstrap.js"></script>
     <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    
+
     <script src="../assets/vendor/js/menu.js"></script>
     <!-- endbuild -->
 

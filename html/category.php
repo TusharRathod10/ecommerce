@@ -105,6 +105,7 @@ $select_data = mysqli_query($con, "SELECT * FROM product");
                       <tr>
                         <th>Id</th>
                            <th>Categories</th>
+                           <th>Image</th>
                             <th>Edit</th>
                         <th>Remove</th>
                       </tr>

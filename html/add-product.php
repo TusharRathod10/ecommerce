@@ -7,6 +7,7 @@ if (isset($_POST['submit'])) {
 
     $title = $_POST['title'];
     $price = $_POST['price'];
+    $discount = $_POST['discount'];
     $description = $_POST['description'];
     $category = implode(',', $_POST['category']);
     $subcategory = implode(',', $_POST['subcategory']);
@@ -20,7 +21,7 @@ if (isset($_POST['submit'])) {
     }
     $image = implode(',', $multiple_image);
     if (isset($image) && !empty($image)) {
-        $insert = mysqli_query($con, "INSERT INTO product(`title`,`image`,`price`,`category`,`subcategory`,`description`)VALUES('$title','$image','$price','$category','$subcategory','$description')");
+        $insert = mysqli_query($con, "INSERT INTO product(`title`,`image`,`price`,`discount`,`category`,`subcategory`,`description`)VALUES('$title','$image','$price','$discount','$category','$subcategory','$description')");
         header('location:product.php');
     }
 }
@@ -41,10 +42,11 @@ if (isset($_POST['update'])) {
 
     $ntitle = $_POST['title'] ? $_POST['title'] : $data_arr['title'];
     $nprice = $_POST['price'] ? $_POST['price'] : $data_arr['price'];
+    $ndiscount = $_POST['discount'] ? $_POST['discount'] : $data_arr['discount'];
     $ndescription = $_POST['description'] ? $_POST['description'] : $data_arr['description'];
     $ncategory = $_POST['category'] ? $_POST['category'] : $category;
     $nsubcategory = $_POST['subcategory'] ? $_POST['subcategory'] : $subcategory;
-    if (empty($_FILES['image']['name'][0])) {
+    if (!empty($_FILES['multiple']['name'][0])) {
         $old_memories_pic = !empty($data_arr['image']) ? explode(',', $data_arr['image']) : '';
         if (!empty($old_memories_pic)) {
             foreach ($old_memories_pic as $pic) {
@@ -62,11 +64,13 @@ if (isset($_POST['update'])) {
             move_uploaded_file($image['tmp_name'][$i], "../assets/products/" . $multiple_image[$i]);
         }
         $memories = implode(',', $multiple_image);
+    }else{
+        $memories=$data_arr['image'];
     }
     $ncategory = implode(" , ", $ncategory);
     $nsubcategory = implode(" , ", $nsubcategory);
 
-    $data_update = "UPDATE product SET `title`='$ntitle',`price`='$nprice',`description`='$ndescription',`category`='$ncategory',`subcategory`='$nsubcategory',`image`='$memories' WHERE `id`='$id'";
+    $data_update = "UPDATE product SET `title`='$ntitle',`price`='$nprice',`discount`='$ndiscount',`description`='$ndescription',`category`='$ncategory',`subcategory`='$nsubcategory',`image`='$memories' WHERE `id`='$id'";
     $updated_data_exe = mysqli_query($con, $data_update);
 
     if ($updated_data_exe) {
@@ -162,9 +166,9 @@ if (isset($_POST['update'])) {
                                             <div class="mb-3">
                                                 <label class="form-label" for="basic-default-fullname">Product
                                                     Name</label>
-                                                <input type="text" id="p_name" name="title" value="<?php if (isset($_GET['update_id'])) {
-                                                                                                        echo $data_arr['title'];
-                                                                                                    } ?>" class="form-control" required />
+                                                <input type="text" style="width: 45%;" placeholder="Enter Product Name" id="p_name" name="title" value="<?php if (isset($_GET['update_id'])) {
+                                                                                                                                                            echo $data_arr['title'];
+                                                                                                                                                        } ?>" class="form-control" required />
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label" for="basic-default-fullname">Product
@@ -173,17 +177,27 @@ if (isset($_POST['update'])) {
                                                 <?php if (isset($_GET['update_id'])) {
                                                     $img = explode(',', $data_arr['image']);
                                                     for ($i = 0; $i < count($img); $i++) {
-                                                ?> <img src="../assets/products/<?php echo $img[$i] ?>" alt="" height="70px" width="70px" style="border: 1px solid black; padding: 5px;margin:10px;"><?php } } ?>
-                                                <input type="file" id="img" name="multiple[]" required multiple><br>
+                                                ?> <img src="../assets/products/<?php echo $img[$i] ?>" alt="" height="70px" width="70px" style="border: 1px solid black; padding: 5px;margin:10px;"><?php }
+                                                                                                                                                                                                } ?>
+                                                <input type="file" id="img" name="multiple[]" class="form-control" style="width: 35%;"  multiple>
 
                                             </div>
 
                                             <div class="mb-3">
                                                 <label class="form-label" for="basic-default-fullname">Product
                                                     Price</label>
-                                                <input type="text" id="p_price" name="price" value="<?php if (isset($_GET['update_id'])) {
-                                                                                                        echo $data_arr['price'];
-                                                                                                    } ?>" class="form-control" required />
+                                                <input type="tel" placeholder="Enter Product Price" id="p_price" style="width: 35%;" name="price" value="<?php if (isset($_GET['update_id'])) {
+                                                                                                                                                                echo $data_arr['price'];
+                                                                                                                                                            } ?>" class="form-control" required />
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label" for="basic-default-fullname">Product
+                                                    Discount</label>
+
+                                                <input type="number" style="width: 35%;" placeholder="Enter Product Discount" id="p_dis" name="discount" min="1" max="100" value="<?php if (isset($_GET['update_id'])) {
+                                                                                                                                                                                        echo $data_arr['discount'];
+                                                                                                                                                                                    } ?>" class="form-control" required />
+
                                             </div>
                                             <div class="mb-3">
                                                 <div class="row">

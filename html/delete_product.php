@@ -34,6 +34,7 @@ while ($data = mysqli_fetch_assoc($users)) {
     $table_row .= '<tr><td>' . $data['id'] . '</td>
                     <td>' . $data['title'] . '</td>
                     <td>' . $data['price'] . '</td>
+                    <td>' . $data['discount'] . '</td>
                     <td>' . $data['category'] . '</td>
                     <td>' . $data['subcategory'] . '</td>
                     <td>' . $data['description'] . '</td><td>';
@@ -46,5 +47,3 @@ while ($data = mysqli_fetch_assoc($users)) {
     $table_row .= '</td></tr>';
 }
 echo '<pre>' . $table_row;
-
-?>

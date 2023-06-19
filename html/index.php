@@ -147,9 +147,10 @@ include('../config/session-cookie.php');
                               </div>
                             </div>
                           </div>
-                          <span class="fw-semibold d-block mb-1">Profit</span>
-                          <h3 class="card-title mb-2">$12,628</h3>
-                          <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +72.80%</small>
+                          <span class="fw-semibold d-block mb-1 data">User</span>
+                          <h2 class="card-title mb-2 allcount"><?php $get_user = mysqli_query($con, "SELECT * FROM register WHERE `role`='user'");
+                                                                $user = mysqli_num_rows($get_user);
+                                                                echo $user ?></h2>
                         </div>
                       </div>
                     </div>
@@ -181,9 +182,10 @@ include('../config/session-cookie.php');
                               </div>
                             </div>
                           </div>
-                          <span>Sales</span>
-                          <h3 class="card-title text-nowrap mb-1">$4,679</h3>
-                          <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small>
+                          <span class="fw-semibold d-block mb-1 data">Product</span>
+                          <h2 class="card-title mb-2 allcount"><?php $get_user = mysqli_query($con, "SELECT * FROM product");
+                                                                $user = mysqli_num_rows($get_user);
+                                                                echo $user ?></h2>
                         </div>
                       </div>
                     </div>
@@ -273,9 +275,10 @@ include('../config/session-cookie.php');
                               </div>
                             </div>
                           </div>
-                          <span class="d-block mb-1">Payments</span>
-                          <h3 class="card-title text-nowrap mb-2">$2,456</h3>
-                          <small class="text-danger fw-semibold"><i class="bx bx-down-arrow-alt"></i> -14.82%</small>
+                          <span class="fw-semibold d-block mb-1 data">Category</span>
+                          <h2 class="card-title mb-2 allcount"><?php $get_user = mysqli_query($con, "SELECT * FROM category");
+                                                                $user = mysqli_num_rows($get_user);
+                                                                echo $user ?></h2>
                         </div>
                       </div>
                     </div>
@@ -303,9 +306,10 @@ include('../config/session-cookie.php');
                               </div>
                             </div>
                           </div>
-                          <span class="fw-semibold d-block mb-1">Transactions</span>
-                          <h3 class="card-title mb-2">$14,857</h3>
-                          <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.14%</small>
+                          <span class="fw-semibold d-block mb-1 data">Sub-Category</span>
+                          <h2 class="card-title mb-2 allcount"><?php $get_user = mysqli_query($con, "SELECT * FROM subcategory");
+                                                                $user = mysqli_num_rows($get_user);
+                                                                echo $user ?></h2>
                         </div>
                       </div>
                     </div>
@@ -651,7 +655,15 @@ include('../config/session-cookie.php');
     <script src="../assets/vendor/libs/popper/popper.js"></script>
     <script src="../assets/vendor/js/bootstrap.js"></script>
     <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js" integrity="sha512-CEiA+78TpP9KAIPzqBvxUv8hy41jyI3f2uHi7DGp/Y/Ka973qgSdybNegWFciqh6GrN2UePx2KkflnQUbUhNIA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.min.js" integrity="sha512-d8F1J2kyiRowBB/8/pAWsqUl0wSEOkG5KATkVV4slfblq9VRQ6MyDZVxWl2tWd+mPhuCbpTB4M7uU/x9FlgQ9Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>$('.allcount').counterUp({
+  delay: 2,
+  time: 200,
+});
+$('.allcount').addClass('animated fadeInDownBig');
+$('.data').addClass('animated fadeIn');</script>
     <script src="../assets/vendor/js/menu.js"></script>
     <!-- endbuild -->
 

@@ -63,9 +63,7 @@ $select_data = mysqli_query($con, "SELECT * FROM product");
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
-    <!-- Page CSS -->
-
-    <!-- Helpers -->
+        <!-- Helpers -->
     <script src="../assets/vendor/js/helpers.js"></script>
 
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
@@ -100,12 +98,14 @@ $select_data = mysqli_query($con, "SELECT * FROM product");
                 <a href="add-product.php"> <button type="submit" class="btn btn-primary">Add Product</button></a>
                 </div>
                 <div class="table-responsive text-nowrap">
-                  <table class="table">
+                 
+                  <table class="table" id="data">
                     <thead>
                       <tr>
                         <th>Id</th>
                         <th>Title</th>
                         <th>Price</th>
+                        <th>Discount</th>
                         <th>Categories</th>
                         <th>SubCategories</th>
                         <th>Description</th>
@@ -119,7 +119,7 @@ $select_data = mysqli_query($con, "SELECT * FROM product");
                       </table>
                 </div>
               </div>
-              <!--/ Basic Bootstrap Table -->
+                   <!--/ Basic Bootstrap Table -->
              <div class="content-backdrop fade"></div>
           <!-- Content wrapper -->
         </div>
@@ -147,10 +147,10 @@ $select_data = mysqli_query($con, "SELECT * FROM product");
     <script src="../assets/vendor/js/bootstrap.js"></script>
     <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
         <script src="../assets/vendor/js/menu.js"></script>
-        
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-    <script>
+
+       <script>
       $(document).ready(function () {
         fetchdata();
       });
@@ -176,9 +176,9 @@ $select_data = mysqli_query($con, "SELECT * FROM product");
           }
         });
       }
-    </script>
-       
-    <!-- endbuild -->
+            </script>
+
+      <!-- endbuild -->
 
     <!-- Vendors JS -->
 
