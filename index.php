@@ -2,10 +2,6 @@
 
 include('../config/db.php');
 
-if ($_SESSION['admin'] == '') {
-    header('location:../html/auth-login-basic.php');
-}
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,84 +33,11 @@ if ($_SESSION['admin'] == '') {
 
 <body>
     <!-- Topbar Start -->
-    <div class="container-fluid">
-        <div class="row bg-secondary py-1 px-xl-5">
-            <div class="col-lg-6 d-none d-lg-block">
-                <div class="d-inline-flex align-items-center h-100">
-                    <a class="text-body mr-3" href="">About</a>
-                    <a class="text-body mr-3" href="">Contact</a>
-                    <a class="text-body mr-3" href="">Help</a>
-                    <a class="text-body mr-3" href="">FAQs</a>
-                </div>
-            </div>
-            <div class="col-lg-6 text-center text-lg-right">
-                <div class="d-inline-flex align-items-center">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My Account</button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a href="../html/auth-login-basic.php" style="text-decoration: none;"><button class="dropdown-item" type="button">Sign In</button></a>
-                            <a href="../html/auth-register-basic.php" style="text-decoration: none;"><button class="dropdown-item" type="button">Sign Up</button></a>
-                            <a href="../config/logout.php" style="text-decoration: none;"><button class="dropdown-item" type="button">Logout</button></a>
-                        </div>
-                    </div>
-                    <div class="btn-group mx-2">
-                        <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">USD</button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <button class="dropdown-item" type="button">EUR</button>
-                            <button class="dropdown-item" type="button">GBP</button>
-                            <button class="dropdown-item" type="button">CAD</button>
-                        </div>
-                    </div>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">EN</button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <button class="dropdown-item" type="button">FR</button>
-                            <button class="dropdown-item" type="button">AR</button>
-                            <button class="dropdown-item" type="button">RU</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-inline-flex align-items-center d-block d-lg-none">
-                    <a href="" class="btn px-0 ml-2">
-                        <i class="fas fa-heart text-dark"></i>
-                        <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">0</span>
-                    </a>
-                    <a href="" class="btn px-0 ml-2">
-                        <i class="fas fa-shopping-cart text-dark"></i>
-                        <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">0</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
-            <div class="col-lg-4">
-                <a href="" class="text-decoration-none">
-                    <span class="h1 text-uppercase text-primary bg-dark px-2">Multi</span>
-                    <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Shop</span>
-                </a>
-            </div>
-            <div class="col-lg-4 col-6 text-left">
-                <form action="">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for products">
-                        <div class="input-group-append">
-                            <span class="input-group-text bg-transparent text-primary">
-                                <i class="fa fa-search"></i>
-                            </span>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="col-lg-4 col-6 text-right">
-                <p class="m-0">Customer Service</p>
-                <h5 class="m-0">+012 345 6789</h5>
-            </div>
-        </div>
-    </div>
+   <?php include('config/topbar.php')?>
     <!-- Topbar End -->
 
     <!-- Navbar -->
-    <?php include('header.php') ?>
+    <?php include('config/header.php') ?>
 
     <!-- Carousel Start -->
     <div class="container-fluid mb-3">
@@ -223,7 +146,7 @@ if ($_SESSION['admin'] == '') {
         <div class="row px-xl-5 pb-3">
             <?php while ($row = mysqli_fetch_assoc($getdata)) { ?>
                 <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-                    <a class="text-decoration-none" href="">
+                    <a class="text-decoration-none" href="index.php?cat=<?php echo $row['categories']; ?>">
                         <div class="cat-item d-flex align-items-center mb-4 p-2">
                             <div class="overflow-hidden" style="width: 70px; height: 70px;">
                                 <img class="img-fluid" src="../assets/category/<?php echo $row['img']; ?>" alt="">
@@ -249,7 +172,15 @@ if ($_SESSION['admin'] == '') {
     <!-- Products Start -->
     <div class="container-fluid pt-5 pb-3">
         <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Featured Products</span></h2>
-        <?php $getproduct = mysqli_query($con, "SELECT * FROM product"); ?>
+        <?php if (isset($_GET['cat'])) {
+            $category = $_GET['cat'];
+            $getproduct = mysqli_query($con, "SELECT * FROM product WHERE `category`='$category'");
+        } elseif (isset($_GET['sub'])) {
+            $subcategory = $_GET['sub'];
+            $getproduct = mysqli_query($con, "SELECT * FROM product WHERE `subcategory`='$subcategory'");
+        } else {
+            $getproduct = mysqli_query($con, "SELECT * FROM product ORDER BY `discount` DESC LIMIT 12");
+        } ?>
         <div class="row px-xl-5">
             <?php while ($row2 = mysqli_fetch_assoc($getproduct)) { ?>
                 <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
@@ -258,9 +189,9 @@ if ($_SESSION['admin'] == '') {
                             <?php
                             $img = explode(',', $row2['image']);
                             for ($i = 0; $i < count($img); $i++) {
-                            ?> <img src="../assets/products/<?php echo $img[$i] ?>" alt="" height="150px" width="150px" style="align-items: center; padding: 5px;margin:10px;"><?php } ?>
+                            ?> <img src="../assets/products/<?php echo $img[$i] ?>" alt="" height="200px" width="50%" style="padding: 5px;margin:10px;"><?php } ?>
                             <div class="product-action">
-                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
+                                <a class="btn btn-outline-dark btn-square" href="shop.php"><i class="fa fa-shopping-cart"></i></a>
                                 <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
                                 <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
                                 <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
@@ -269,16 +200,16 @@ if ($_SESSION['admin'] == '') {
                         <div class="text-center py-4">
                             <a class="h6 text-decoration-none text-truncate" href=""><?php echo $row2['title']; ?></a>
                             <div class="d-flex align-items-center justify-content-center mt-2">
-                                <h5>₹<?php echo $row2['price']; ?></h5>
+                                <h5>₹<?php $price = $row2['price'] - ($row2['price'] * ($row2['discount'] / 100));
+                                        echo intval($price); ?></h5>
+                                <h6 class="text-muted ml-2"><del>₹<?php echo $row2['price'] ?></del></h6>
                                 <h6 class="text-muted ml-2" style="font-size: 12px;"><?php echo $row2['discount']; ?>% OFF</h6>
                             </div>
                             <div class="d-flex align-items-center justify-content-center mb-1">
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small>(99)</small>
+                                <?php for ($i = 0; $i < rand(2, 5); $i++) { ?>
+                                    <small class="fa fa-star text-primary mr-1"></small>
+                                <?php } ?>
+                                <small>(<?php echo rand(50, 150) ?>)</small>
                             </div>
                         </div>
                     </div>
@@ -329,9 +260,9 @@ if ($_SESSION['admin'] == '') {
                             <?php
                             $img = explode(',', $row2['image']);
                             for ($i = 0; $i < count($img); $i++) {
-                            ?> <img src="../assets/products/<?php echo $img[$i] ?>" alt="" height="150px" width="150px" style="align-items: center; padding: 5px;margin:10px;"><?php } ?>
+                            ?> <img src="../assets/products/<?php echo $img[$i] ?>" alt="" height="200px" width="50%" style="padding: 5px;margin:10px;"><?php } ?>
                             <div class="product-action">
-                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
+                                <a class="btn btn-outline-dark btn-square" href="shop.php"><i class="fa fa-shopping-cart"></i></a>
                                 <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
                                 <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
                                 <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
@@ -340,16 +271,16 @@ if ($_SESSION['admin'] == '') {
                         <div class="text-center py-4">
                             <a class="h6 text-decoration-none text-truncate" href=""><?php echo $row2['title']; ?></a>
                             <div class="d-flex align-items-center justify-content-center mt-2">
-                                <h5>₹<?php echo $row2['price']; ?></h5>
+                                <h5>₹<?php $price = $row2['price'] - ($row2['price'] * ($row2['discount'] / 100));
+                                        echo intval($price); ?></h5>
+                                <h6 class="text-muted ml-2"><del>₹<?php echo $row2['price'] ?></del></h6>
                                 <h6 class="text-muted ml-2" style="font-size: 12px;"><?php echo $row2['discount']; ?>% OFF</h6>
                             </div>
                             <div class="d-flex align-items-center justify-content-center mb-1">
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small>(99)</small>
+                                <?php for ($i = 0; $i < rand(2, 5); $i++) { ?>
+                                    <small class="fa fa-star text-primary mr-1"></small>
+                                <?php } ?>
+                                <small>(<?php echo rand(50, 150) ?>)</small>
                             </div>
                         </div>
                     </div>
@@ -396,7 +327,7 @@ if ($_SESSION['admin'] == '') {
     <!-- Vendor End -->
 
 
-    <?php include('footer.php') ?>
+    <?php include('config/footer.php') ?>
 
 
     <!-- Back to Top -->

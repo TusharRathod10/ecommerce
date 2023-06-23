@@ -2,10 +2,37 @@
 
 include('../config/db.php');
 
-if ($_SESSION['admin'] == '') {
-    header('location:../html/auth-login-basic.php');
+if (isset($_POST['update_btn'])) {
+    if ($_SESSION['admin']['role'] == 'user') {
+        $update_id = $_POST['update_quantity_id'];
+        $update_value = $_POST['update_quantity'];
+        $quantity_update = mysqli_query($con, "UPDATE `cart` SET `quantity`='$update_value' WHERE `id`='$update_id'");
+        if ($quantity_update) {
+            header('location:cart.php');
+        }
+    } else {
+        header('location:../html/auth-login-basic.php');
+    }
 }
 
+if (isset($_GET['remove'])) {
+    if ($_SESSION['admin']['role'] == 'user') {
+        $remove_id = $_GET['remove'];
+        mysqli_query($con, "DELETE FROM `cart` WHERE `id`='$remove_id'");
+        header('location:cart.php');
+    } else {
+        header('location:../html/auth-login-basic.php');
+    }
+}
+
+if (isset($_GET['remove_all'])) {
+    if ($_SESSION['admin']['role'] == 'user') {
+        mysqli_query($con, "DELETE FROM `cart`");
+        header('location:cart.php');
+    } else {
+        header('location:../html/auth-login-basic.php');
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,11 +49,19 @@ if ($_SESSION['admin'] == '') {
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">  
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-
+    <style>
+        #number {
+            padding: 0.5rem 0.5rem;
+            font: 1rem;
+            color: var(--blue);
+            width: 5rem;
+            border: 1px solid silver;
+        }
+    </style>
     <!-- Libraries Stylesheet -->
     <link href="lib/animate/animate.min.css" rel="stylesheet">
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
@@ -37,99 +72,26 @@ if ($_SESSION['admin'] == '') {
 
 <body>
     <!-- Topbar Start -->
-    <div class="container-fluid">
-        <div class="row bg-secondary py-1 px-xl-5">
-            <div class="col-lg-6 d-none d-lg-block">
-                <div class="d-inline-flex align-items-center h-100">
-                    <a class="text-body mr-3" href="">About</a>
-                    <a class="text-body mr-3" href="">Contact</a>
-                    <a class="text-body mr-3" href="">Help</a>
-                    <a class="text-body mr-3" href="">FAQs</a>
-                </div>
-            </div>
-            <div class="col-lg-6 text-center text-lg-right">
-                <div class="d-inline-flex align-items-center">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My Account</button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <button class="dropdown-item" type="button">Sign in</button>
-                            <button class="dropdown-item" type="button">Sign up</button>
-                        </div>
-                    </div>
-                    <div class="btn-group mx-2">
-                        <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">USD</button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <button class="dropdown-item" type="button">EUR</button>
-                            <button class="dropdown-item" type="button">GBP</button>
-                            <button class="dropdown-item" type="button">CAD</button>
-                        </div>
-                    </div>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">EN</button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <button class="dropdown-item" type="button">FR</button>
-                            <button class="dropdown-item" type="button">AR</button>
-                            <button class="dropdown-item" type="button">RU</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-inline-flex align-items-center d-block d-lg-none">
-                    <a href="" class="btn px-0 ml-2">
-                        <i class="fas fa-heart text-dark"></i>
-                        <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">0</span>
-                    </a>
-                    <a href="" class="btn px-0 ml-2">
-                        <i class="fas fa-shopping-cart text-dark"></i>
-                        <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">0</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
-            <div class="col-lg-4">
-                <a href="" class="text-decoration-none">
-                    <span class="h1 text-uppercase text-primary bg-dark px-2">Multi</span>
-                    <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Shop</span>
-                </a>
-            </div>
-            <div class="col-lg-4 col-6 text-left">
-                <form action="">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for products">
-                        <div class="input-group-append">
-                            <span class="input-group-text bg-transparent text-primary">
-                                <i class="fa fa-search"></i>
-                            </span>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="col-lg-4 col-6 text-right">
-                <p class="m-0">Customer Service</p>
-                <h5 class="m-0">+012 345 6789</h5>
-            </div>
-        </div>
-    </div>
+    <?php include('config/topbar.php') ?>
+
     <!-- Topbar End -->
 
     <!-- Navbar -->
-    <?php include('header.php') ?>
+    <?php include('config/header.php') ?>
 
     <!-- Breadcrumb Start -->
     <div class="container-fluid">
         <div class="row px-xl-5">
             <div class="col-12">
                 <nav class="breadcrumb bg-light mb-30">
-                    <a class="breadcrumb-item text-dark" href="#">Home</a>
-                    <a class="breadcrumb-item text-dark" href="#">Shop</a>
+                    <a class="breadcrumb-item text-dark" href="index.php">Home</a>
+                    <a class="breadcrumb-item text-dark" href="shop.php">Shop</a>
                     <span class="breadcrumb-item active">Shopping Cart</span>
                 </nav>
             </div>
         </div>
     </div>
     <!-- Breadcrumb End -->
-
-
     <!-- Cart Start -->
     <div class="container-fluid">
         <div class="row px-xl-5">
@@ -138,118 +100,55 @@ if ($_SESSION['admin'] == '') {
                     <thead class="thead-dark">
                         <tr>
                             <th>Products</th>
-                            <th>Price</th>
+                            <th>Original Price</th>
+                            <th>Discount Price</th>
                             <th>Quantity</th>
                             <th>Total</th>
                             <th>Remove</th>
                         </tr>
                     </thead>
-                    <tbody class="align-middle">
-                        <tr>
-                            <td class="align-middle"><img src="img/product-1.jpg" alt="" style="width: 50px;"> Product Name</td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus" >
-                                        <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></td>
-                        </tr>
-                        <tr>
-                            <td class="align-middle"><img src="img/product-2.jpg" alt="" style="width: 50px;"> Product Name</td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus" >
-                                        <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></td>
-                        </tr>
-                        <tr>
-                            <td class="align-middle"><img src="img/product-3.jpg" alt="" style="width: 50px;"> Product Name</td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus" >
-                                        <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></td>
-                        </tr>
-                        <tr>
-                            <td class="align-middle"><img src="img/product-4.jpg" alt="" style="width: 50px;"> Product Name</td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus" >
-                                        <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></td>
-                        </tr>
-                        <tr>
-                            <td class="align-middle"><img src="img/product-5.jpg" alt="" style="width: 50px;"> Product Name</td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus" >
-                                        <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></td>
-                        </tr>
+                    <tbody class="align-middle"><?php
+                                                $grand_total = 0;
+                                                $login_mail=$_SESSION['admin']['email'];
+                                                $getQuery =  mysqli_query($con, "SELECT *FROM cart WHERE `login_mail`='$login_mail'");
+                                                while ($row2 = mysqli_fetch_assoc($getQuery)) { ?>
+                            <tr>
+                                <td class="align-middle"><?php
+                                                            $img = explode(',', $row2['pro_image']);
+                                                            for ($i = 0; $i < count($img); $i++) {
+                                                            ?> <img src="../assets/products/<?php print($img[$i]); ?>" alt="" style="width: 50px;margin-right: 10px;"><?php }
+                                                                                                                                                                        ?><?php echo $row2['pro_name']; ?></td>
+                                <td class="align-middle">₹<?php
+                                                            echo $row2['pro_price']; ?></td>
+                                <td class="align-middle">₹<?php $price = $row2['pro_price'] - ($row2['pro_price'] * ($row2['pro_discount'] / 100));
+                                                            echo intval($price); ?></td>
+                                <td class="align-middle">
+                                    <form action="" method="post">
+                                        <input type="hidden" name="update_quantity_id" id="" value="<?php echo $row2['id']; ?>">
+                                        <input type="number" min="1" name="update_quantity" id="number" value="<?php echo $row2['quantity']; ?>">
+                                        <button type="submit" style="margin:10px;padding:2px 5px; border-radius: 5px;" class="btn btn-primary" value="update" name="update_btn"><i class="fa fa-check"></i></button>
+                                    </form>
+                                </td>
+                                <td class="align-middle"><?php echo "₹" . $sub_total = intval($price * $row2['quantity']); ?></td>
+                                <td class="align-middle"><a href="cart.php?remove=<?php echo $row2['id']; ?>" onclick="return confirm('Remove Item From Cart?')" class="delete"><button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></a></td>
+                            </tr>
+                        <?php
+                                                    $grand_total += $sub_total;
+                                                }
+                                                if (mysqli_num_rows($getQuery) > 0) { ?>
+                            <tr style="margin-top:10x;">
+                                <td class="align-middle"><button class="btn btn-primary" style="border-radius: 5px;"><a href="shop.php" style="margin-top: 0;color: black; text-decoration: none;">Add More Product</a></button></td>
+                                <td colspan="3" style="font-size: 20px; font-weight: 600;">Grand Total : </td>
+                                <td><?php echo '₹' . $grand_total; ?></td>
+                                <td><a href="cart.php?remove_all=<?php $getQuery =  mysqli_query($con, "SELECT *FROM cart");
+                                                                    $getall = mysqli_fetch_assoc($getQuery);
+                                                                    echo $getall['id']; ?>" onclick="return confirm('Are You Sure You Want To Delete All?')" class="delete"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button></a></td>
+                            </tr><?php } else { ?>
+                            <tr>
+                                <td colspan="5" style="font-size: 20px; font-weight: 600;">No Product Carted</td>
+                                <td class="align-middle"><button class="btn btn-primary" style="border-radius: 5px;"><a href="shop.php" style="margin-top: 0;color: black; text-decoration: none;">Continue Shopping</a></button></td>
+                            </tr>
+                        <?php } ?>
                     </tbody>
                 </table>
             </div>
@@ -266,20 +165,29 @@ if ($_SESSION['admin'] == '') {
                 <div class="bg-light p-30 mb-5">
                     <div class="border-bottom pb-2">
                         <div class="d-flex justify-content-between mb-3">
-                            <h6>Subtotal</h6>
-                            <h6>$150</h6>
+                            <h6>Grand Total</h6>
+                            <h6><?php echo '₹' . $grand_total; ?></h6>
                         </div>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Shipping</h6>
-                            <h6 class="font-weight-medium">$10</h6>
+                            <h6 class="font-weight-medium"><?php if ($grand_total > 1) {
+                                                                echo '₹' . $shipping = 40;
+                                                            } else {
+                                                                echo '₹' . $shipping = 0;
+                                                            } ?></h6>
                         </div>
                     </div>
                     <div class="pt-2">
                         <div class="d-flex justify-content-between mt-2">
                             <h5>Total</h5>
-                            <h5>$160</h5>
+                            <h5><?php $total = $grand_total + $shipping;
+                                echo '₹' . $total; ?></h5>
                         </div>
-                        <button class="btn btn-block btn-primary font-weight-bold my-3 py-3">Proceed To Checkout</button>
+                        <button class="btn btn-block btn-primary font-weight-bold my-3 py-3" <?php if ($grand_total < 1) {
+                                                                                                    echo 'disabled';
+                                                                                                } else {
+                                                                                                    echo '';
+                                                                                                } ?>><a href="checkout.php" style="text-decoration:none; color: black;">Proceed To Checkout</a></button>
                     </div>
                 </div>
             </div>
@@ -288,7 +196,7 @@ if ($_SESSION['admin'] == '') {
     <!-- Cart End -->
 
 
-    <?php include('footer.php') ?>
+    <?php include('config/footer.php') ?>
 
 
 
