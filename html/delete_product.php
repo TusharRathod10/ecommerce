@@ -37,7 +37,7 @@ while ($data = mysqli_fetch_assoc($users)) {
                     <td>' . $data['discount'] . '</td>
                     <td>' . $data['category'] . '</td>
                     <td>' . $data['subcategory'] . '</td>
-                    <td>' . $data['description'] . '</td><td>';
+                    <td style="white-space: pre-wrap;">' . $data['description'] . '</td><td>';
     for ($i = 0; $i < count($memories); $i++) {
         $table_row .= '<div style="width: 75px;height: 75px; margin:10px 0px;"><img src="' . '../assets/products/' . $memories[$i] . '" style="max-width: 100%;max-height: 100%; border: 1px solid black; padding: 5px;"></div>';
     }
