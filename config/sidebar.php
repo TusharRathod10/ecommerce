@@ -4,7 +4,7 @@
      <div class="app-brand demo">
          <a href="index.php" class="app-brand-link">
              <span class="app-brand-logo demo">
-            <img src="../assets/img/pngegg.png" alt="" height="40px" width="40px">
+                 <img src="../assets/img/pngegg.png" alt="" height="40px" width="40px">
              </span>
              <span class=" demo menu-text fw-bolder ms-2" style="font-size: 20px;">Commerce</span>
          </a>
@@ -70,6 +70,24 @@
              <a href="product.php" class="menu-link">
                  <i class="menu-icon tf-icons bx bx-collection"></i>
                  <div data-i18n="Basic">Product</div>
+             </a>
+         </li>
+
+         <li class="menu-header small text-uppercase"><span class="menu-header-text">Customer Order</span></li>
+         <!-- Cards -->
+         <li class="menu-item">
+             <a href="../html/order.php" class="menu-link">
+                 <i class="menu-icon tf-icons bx bx-collection"></i>
+                 <div data-i18n="Basic">Orders</div>
+             </a>
+         </li>
+
+         <li class="menu-header small text-uppercase"><span class="menu-header-text">Logout</span></li>
+         <!-- Cards -->
+         <li class="menu-item">
+             <a class="dropdown-item" href="../config/logout.php">
+                 <i class="bx bx-power-off me-2"></i>
+                 <span class="align-middle">Log Out</span>
              </a>
          </li>
      </ul>
