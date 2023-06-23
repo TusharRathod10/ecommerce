@@ -1,0 +1,48 @@
+.span {
+    cursor: pointer;
+}
+
+.number {
+    margin: 100px;
+}
+
+.minus,
+.plus {
+    width: 35px;
+    height: 35px;
+    background: #FFD333;
+    border-radius: 4px;
+    padding: 8px 5px 8px 5px;
+    border: 1px solid #ddd;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.input {
+    height: 35px;
+    width: 100px;
+    text-align: center;
+    font-size: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.order-message-container{
+    position: fixed;
+    top:0; left:0;
+    height: 100vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding:2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1100;
+    background-color: var(--dark-bg);
+    width: 100%;
+ }
+ 
+ 
