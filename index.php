@@ -33,7 +33,7 @@ include('../config/db.php');
 
 <body>
     <!-- Topbar Start -->
-   <?php include('config/topbar.php')?>
+    <?php include('config/topbar.php') ?>
     <!-- Topbar End -->
 
     <!-- Navbar -->
@@ -56,7 +56,7 @@ include('../config/db.php');
                                 <div class="p-3" style="max-width: 700px;">
                                     <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">Men Fashion</h1>
                                     <p class="mx-md-5 px-5 animate__animated animate__bounceIn">Lorem rebum magna amet lorem magna erat diam stet. Sadips duo stet amet amet ndiam elitr ipsum diam</p>
-                                    <a class="btn btn-outline-light py-2 px-4 mt-3 animate__animated animate__fadeInUp" href="#">Shop Now</a>
+                                    <a class="btn btn-outline-light py-2 px-4 mt-3 animate__animated animate__fadeInUp" href="shop.php">Shop Now</a>
                                 </div>
                             </div>
                         </div>
@@ -66,7 +66,7 @@ include('../config/db.php');
                                 <div class="p-3" style="max-width: 700px;">
                                     <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">Women Fashion</h1>
                                     <p class="mx-md-5 px-5 animate__animated animate__bounceIn">Lorem rebum magna amet lorem magna erat diam stet. Sadips duo stet amet amet ndiam elitr ipsum diam</p>
-                                    <a class="btn btn-outline-light py-2 px-4 mt-3 animate__animated animate__fadeInUp" href="#">Shop Now</a>
+                                    <a class="btn btn-outline-light py-2 px-4 mt-3 animate__animated animate__fadeInUp" href="shop.php">Shop Now</a>
                                 </div>
                             </div>
                         </div>
@@ -76,7 +76,7 @@ include('../config/db.php');
                                 <div class="p-3" style="max-width: 700px;">
                                     <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">Kids Fashion</h1>
                                     <p class="mx-md-5 px-5 animate__animated animate__bounceIn">Lorem rebum magna amet lorem magna erat diam stet. Sadips duo stet amet amet ndiam elitr ipsum diam</p>
-                                    <a class="btn btn-outline-light py-2 px-4 mt-3 animate__animated animate__fadeInUp" href="#">Shop Now</a>
+                                    <a class="btn btn-outline-light py-2 px-4 mt-3 animate__animated animate__fadeInUp" href="shop.php">Shop Now</a>
                                 </div>
                             </div>
                         </div>
@@ -191,7 +191,7 @@ include('../config/db.php');
                             for ($i = 0; $i < count($img); $i++) {
                             ?> <img src="../assets/products/<?php echo $img[$i] ?>" alt="" height="200px" width="50%" style="padding: 5px;margin:10px;"><?php } ?>
                             <div class="product-action">
-                                <a class="btn btn-outline-dark btn-square" href="shop.php"><i class="fa fa-shopping-cart"></i></a>
+                                <a class="btn btn-outline-dark btn-square" href="detail.php?id=<?php echo $row2['id']; ?>"><i class="fa fa-shopping-cart"></i></a>
                                 <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
                                 <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
                                 <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
@@ -229,7 +229,7 @@ include('../config/db.php');
                     <div class="offer-text">
                         <h6 class="text-white text-uppercase">Save 20%</h6>
                         <h3 class="text-white mb-3">Special Offer</h3>
-                        <a href="" class="btn btn-primary">Shop Now</a>
+                        <a href="shop.php" class="btn btn-primary">Shop Now</a>
                     </div>
                 </div>
             </div>
@@ -239,7 +239,7 @@ include('../config/db.php');
                     <div class="offer-text">
                         <h6 class="text-white text-uppercase">Save 20%</h6>
                         <h3 class="text-white mb-3">Special Offer</h3>
-                        <a href="" class="btn btn-primary">Shop Now</a>
+                        <a href="shop.php" class="btn btn-primary">Shop Now</a>
                     </div>
                 </div>
             </div>
@@ -262,7 +262,7 @@ include('../config/db.php');
                             for ($i = 0; $i < count($img); $i++) {
                             ?> <img src="../assets/products/<?php echo $img[$i] ?>" alt="" height="200px" width="50%" style="padding: 5px;margin:10px;"><?php } ?>
                             <div class="product-action">
-                                <a class="btn btn-outline-dark btn-square" href="shop.php"><i class="fa fa-shopping-cart"></i></a>
+                                <a class="btn btn-outline-dark btn-square" href="detail.php?id=<?php echo $row2['id']; ?>"><i class="fa fa-shopping-cart"></i></a>
                                 <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
                                 <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
                                 <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>

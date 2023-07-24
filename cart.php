@@ -109,7 +109,7 @@ if (isset($_GET['remove_all'])) {
                     </thead>
                     <tbody class="align-middle"><?php
                                                 $grand_total = 0;
-                                                $login_mail=$_SESSION['admin']['email'];
+                                                $login_mail = $_SESSION['admin']['email'];
                                                 $getQuery =  mysqli_query($con, "SELECT *FROM cart WHERE `login_mail`='$login_mail'");
                                                 while ($row2 = mysqli_fetch_assoc($getQuery)) { ?>
                             <tr>
